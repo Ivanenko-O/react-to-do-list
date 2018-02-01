@@ -1,0 +1,42 @@
+@import '../../theme/palette';
+
+.todoSearch {
+  position: absolute;
+  right: 30px;
+  top: 15px;
+  width: 325px;
+  cursor: pointer;
+
+  input {
+    position: absolute;
+    width: 255px;
+    right: 0;
+    padding: 0 40px 0 20px;
+    line-height: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background-color: $paletteColor11;
+    color: $paletteColor4;
+    overflow: hidden;
+
+    &:focus, &:active {
+      outline: none;
+      width: 100%;
+      transition: width .5s ease-out;
+    }
+  }
+
+  .search__icon {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    display: block;
+    height: 18px;
+    width: 18px;
+    background-image: url('../../theme/assets/icons/search.png');
+    background-repeat: no-repeat;
+  }
+
+}

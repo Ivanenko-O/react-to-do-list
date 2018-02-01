@@ -1,0 +1,67 @@
+@import '../../theme/palette';
+
+.todoForm {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px;
+  color: $paletteColor9;
+
+  form {
+    display: inherit;
+  }
+
+  input {
+    &[type='submit'] {
+      width: 140px;
+      padding-left: 25px;
+      line-height: 40px;
+      text-transform: capitalize;
+      background-color: $paletteColor12;
+      background-image: url('../../theme/assets/icons/add.png');
+      background-repeat: no-repeat;
+      background-position: 20% 50%;
+      border: none;
+      border-radius: 20px;
+      color: $paletteColor2;
+      cursor: pointer;
+
+      &:focus, &:active, &:hover {
+        outline: none;
+        //transform: rotate(-30deg);
+      }
+
+    }
+  }
+
+  textarea {
+    position: relative;
+    right: 0;
+    height: 40px;
+    width: 320px;
+    padding: 12px 30px;
+    margin-right: 20px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    border: none;
+    border-radius: 20px;
+    background-color: $paletteColor11;
+    color: $paletteColor4;
+    box-sizing: border-box;
+
+    &:focus, &:active {
+      outline: none;
+      width: 400px;
+      transition: width .5s ease-out;
+    }
+
+      &::placeholder {
+          transition: color .4s ease-out;
+          color: $paletteColor5;
+      }
+
+      &:focus::placeholder {
+          color: lighten($paletteColor5, 20%);
+      }
+
+  }
+}

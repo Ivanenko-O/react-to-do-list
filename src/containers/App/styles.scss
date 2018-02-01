@@ -1,0 +1,13 @@
+@import '../../theme/palette';
+
+
+.app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 100vw;
+    min-height: 100vh;
+    padding: 15px;
+    background-color: $paletteColor3;
+}
