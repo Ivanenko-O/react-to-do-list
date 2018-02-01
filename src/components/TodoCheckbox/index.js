@@ -8,14 +8,16 @@ import Styles from './styles';
 
 export default class TodoCheckbox extends Component {
     constructor () {
-        super()
+        super();
     }
 
     render () {
+
+
         return (
             <section className = { Styles.checkbox }>
-                <input type = 'checkbox' id="c" />
-                <label htmlFor = "c" >Done all</label>
+                <input type = 'checkbox' id = 'doneAll' />
+                <label htmlFor = 'doneAll'>Done all</label>
             </section>
         );
     }

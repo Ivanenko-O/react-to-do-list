@@ -7,11 +7,10 @@ import Styles from './styles';
 import TodoItems from '../TodoItems';
 import TodoSearch from '../../components/TodoSearch';
 import TodoForm from '../TodoForm';
-import {getUniqueID} from '../../helpers';
+import { getUniqueID } from '../../helpers';
 
 
 export default class TodoList extends Component {
-
     constructor () {
         super();
 
@@ -19,6 +18,7 @@ export default class TodoList extends Component {
         this.editTodo = ::this._editTodo;
         this.toggleTodo = ::this._toggleTodo;
         this.deleteTodo = ::this._deleteTodo;
+        this.filterList = :: this._filterList;
     }
 
     state = {
@@ -39,7 +39,7 @@ export default class TodoList extends Component {
             completed: false
         };
 
-        const todos = [...this.state.todos, todo];
+        const todos = [todo, ...this.state.todos];
         this.setState({ todos });
     }
 
@@ -63,13 +63,24 @@ export default class TodoList extends Component {
             return todo;
         });
         this.setState({ todos });
+
     }
 
     _deleteTodo (id) {
-        console.log(id);
-        this.setState((({todos}) => ({
+        this.setState(({ todos }) => ({
             todos: todos.filter((todo) => id !== todo.id)
-        })));
+        }));
+    }
+
+    _filterList (data) {
+        // const fList = this.state.todos.filter(function(item){
+        //     return item.title.toLowerCase().search(data.toLowerCase())!== -1;
+        // });
+        // обновление состояния
+        this.setState(({ todos }) => ({
+            todos: todos.filter((item) =>
+                item.title.toLowerCase().search(data.toLowerCase()) !== -1)
+        }));
     }
 
     render () {
@@ -88,7 +99,7 @@ export default class TodoList extends Component {
         return (
             <section className = { Styles.todoList } >
                 <h3>To Do List</h3>
-                <TodoSearch />
+                <TodoSearch filterList = { this.filterList } />
                 <hr />
                 { todos }
                 <hr />
