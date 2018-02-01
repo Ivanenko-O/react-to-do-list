@@ -9,28 +9,21 @@ import TodoSearch from '../../components/TodoSearch';
 import TodoForm from '../TodoForm';
 import { getUniqueID } from '../../helpers';
 
-
 export default class TodoList extends Component {
     constructor () {
         super();
 
         this.createTodo = ::this._createTodo;
-        this.editTodo = ::this._editTodo;
-        this.toggleTodo = ::this._toggleTodo;
         this.deleteTodo = ::this._deleteTodo;
+        this.editTodo = ::this._editTodo;
         this.filterList = :: this._filterList;
+        this.getTodos = :: this._getTodos;
+        this.toggleTodo = ::this._toggleTodo;
     }
 
     state = {
-        todos: [
-            {
-                id:        '1',
-                title:     'Изучить JavaScript',
-                completed: true
-            }
-        ]
+        todos: JSON.parse(localStorage.getItem('todos')) || []
     };
-
 
     _createTodo (title) {
         const todo = {
@@ -40,7 +33,19 @@ export default class TodoList extends Component {
         };
 
         const todos = [todo, ...this.state.todos];
+        localStorage.setItem('todos', JSON.stringify(todos));
         this.setState({ todos });
+    }
+
+    _deleteTodo (id) {
+        const { todos: todosData } = this.state;
+        const todos = todosData.filter((todo) => id !== todo.id);
+
+        this.setState({
+            todos: todos
+        });
+        localStorage.setItem('todos', JSON.stringify(todos));
+        console.log(this.state);
     }
 
     _editTodo (id, title) {
@@ -51,6 +56,24 @@ export default class TodoList extends Component {
             }
             return todo;
         });
+        this.setState({ todos });
+    }
+
+    _filterList (data) {
+        event.preventDefault();
+        if( data ) {
+            this.setState(({todos}) => ({
+                todos: todos.filter((todo) =>
+                    todo.title.toLowerCase().search(data.toLowerCase()) !== -1)
+            }));
+        } else {
+            this.getTodos();
+        }
+    }
+
+    _getTodos () {
+        console.log('s');
+        const todos = JSON.parse(localStorage.getItem('todos'));
         this.setState({ todos });
     }
 
@@ -66,33 +89,16 @@ export default class TodoList extends Component {
 
     }
 
-    _deleteTodo (id) {
-        this.setState(({ todos }) => ({
-            todos: todos.filter((todo) => id !== todo.id)
-        }));
-    }
-
-    _filterList (data) {
-        // const fList = this.state.todos.filter(function(item){
-        //     return item.title.toLowerCase().search(data.toLowerCase())!== -1;
-        // });
-        // обновление состояния
-        this.setState(({ todos }) => ({
-            todos: todos.filter((item) =>
-                item.title.toLowerCase().search(data.toLowerCase()) !== -1)
-        }));
-    }
-
     render () {
-
         const { todos: todoData } = this.state;
         const todos = todoData.map((todo) => (
-            <TodoItems key        = { todo.id }
-                       { ...todo }
-                       toggleTodo = { this.toggleTodo }
-                       editTodo   = { this.editTodo }
-                       deleteTodo = { this.deleteTodo }
-
+            <TodoItems
+                key = { todo.id }
+                { ...todo }
+                deleteTodo = { this.deleteTodo }
+                editTodo = { this.editTodo }
+                // getTodos = { this.getTodos }
+                toggleTodo = { this.toggleTodo }
             />
         ));
 

@@ -16,10 +16,9 @@ export default class TodoSearch extends Component {
     }
 
     _filterList (event) {
-        // console.log(event.target.value);
+
         this.props.filterList(event.target.value);
     }
-
 
     render () {
         return (
