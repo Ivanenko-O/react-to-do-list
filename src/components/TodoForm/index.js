@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 // instruments
 import Styles from './styles';
-import TodoCheckbox from '../TodoCheckbox';
 
 export default class TodoForm extends Component {
     static propTypes = {
@@ -61,13 +60,18 @@ export default class TodoForm extends Component {
         }
     }
 
-
     render () {
         const { color, title } = this.state;
 
         return (
             <section className = { Styles.todoForm }>
-                <TodoCheckbox />
+                <div className = { Styles.checkbox } onChange = { this.handleToggle }>
+                    <input
+                        id = 'doneAll'
+                        type = 'checkbox'
+                    />
+                    <label htmlFor = 'doneAll'>Done all</label>
+                </div>
                 <form onSubmit = { this.handleSubmit }>
                     <input
                         placeholder = 'Write here'

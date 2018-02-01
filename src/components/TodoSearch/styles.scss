@@ -26,6 +26,15 @@
       width: 100%;
       transition: width .5s ease-out;
     }
+
+      &::placeholder {
+          color: $paletteColor5;
+          transition: color .2s ease-out;
+      }
+
+      &:focus::placeholder {
+          color: lighten($paletteColor5, 20%);
+      }
   }
 
   .search__icon {

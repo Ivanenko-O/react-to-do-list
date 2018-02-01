@@ -16,7 +16,6 @@ export default class TodoSearch extends Component {
     }
 
     _filterList (event) {
-
         this.props.filterList(event.target.value);
     }
 
@@ -24,7 +23,7 @@ export default class TodoSearch extends Component {
         return (
             <section className = { Styles.todoSearch } onChange = { this.filterList } >
                 <input placeholder = 'Search' type = 'search' />
-                <i className = { Styles.search__icon } ></i>
+                <i className = { Styles.search__icon } />
             </section>
         );
     }

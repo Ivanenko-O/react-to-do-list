@@ -49,11 +49,12 @@ export default class TodoList extends Component {
     }
 
     _editTodo (id, title) {
-        const todos = this.state.todos.map( todo => {
+        const todos = this.state.todos.map((todo) => {
 
             if (todo.id === id) {
                 todo.title = title;
             }
+
             return todo;
         });
         this.setState({ todos });
@@ -62,7 +63,7 @@ export default class TodoList extends Component {
     _filterList (data) {
         event.preventDefault();
         if( data ) {
-            this.setState(({todos}) => ({
+            this.setState(({ todos }) => ({
                 todos: todos.filter((todo) =>
                     todo.title.toLowerCase().search(data.toLowerCase()) !== -1)
             }));
@@ -72,21 +73,23 @@ export default class TodoList extends Component {
     }
 
     _getTodos () {
-        console.log('s');
         const todos = JSON.parse(localStorage.getItem('todos'));
+
         this.setState({ todos });
     }
 
     _toggleTodo (id, completed) {
-        const todos = this.state.todos.map( todo => {
+
+        const todos = this.state.todos.map((todo) => {
 
             if (todo.id === id) {
                 todo.completed = !completed;
             }
             return todo;
         });
-        this.setState({ todos });
 
+        localStorage.setItem('todos', JSON.stringify(todos));
+        this.setState({ todos });
     }
 
     render () {
@@ -97,7 +100,6 @@ export default class TodoList extends Component {
                 { ...todo }
                 deleteTodo = { this.deleteTodo }
                 editTodo = { this.editTodo }
-                // getTodos = { this.getTodos }
                 toggleTodo = { this.toggleTodo }
             />
         ));
