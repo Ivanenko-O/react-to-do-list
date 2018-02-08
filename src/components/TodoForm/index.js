@@ -18,7 +18,7 @@ export default class TodoForm extends Component {
     }
 
     state = {
-        color: 'transparent',
+        color: '',
         title:  ''
     };
 
@@ -32,7 +32,7 @@ export default class TodoForm extends Component {
 
         if (title.length > 30) {
             this.setState({
-                color: 'red'
+                color: '#FF4E2A'
             });
             title.slice(-1);
         } else {
@@ -52,6 +52,7 @@ export default class TodoForm extends Component {
     }
 
     _handleKeyPress (event) {
+
         const enterKey = event.key === 'Enter';
 
         if (enterKey) {
@@ -63,6 +64,7 @@ export default class TodoForm extends Component {
     render () {
         const { color, title } = this.state;
 
+        console.log(title);
         return (
             <section className = { Styles.todoForm }>
                 <div className = { Styles.checkbox } onChange = { this.handleToggle }>

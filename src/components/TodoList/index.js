@@ -1,6 +1,5 @@
 // core
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 // instruments
 import Styles from './styles';
@@ -22,7 +21,8 @@ export default class TodoList extends Component {
     }
 
     state = {
-        todos: JSON.parse(localStorage.getItem('todos')) || []
+        todos: JSON.parse(localStorage.getItem('todos')) || [],
+        search: ''
     };
 
     _createTodo (title) {
@@ -33,6 +33,7 @@ export default class TodoList extends Component {
         };
 
         const todos = [todo, ...this.state.todos];
+
         localStorage.setItem('todos', JSON.stringify(todos));
         this.setState({ todos });
     }
@@ -44,8 +45,8 @@ export default class TodoList extends Component {
         this.setState({
             todos: todos
         });
+
         localStorage.setItem('todos', JSON.stringify(todos));
-        console.log(this.state);
     }
 
     _editTodo (id, title) {
@@ -58,18 +59,15 @@ export default class TodoList extends Component {
             return todo;
         });
         this.setState({ todos });
+        localStorage.setItem('todos', JSON.stringify(todos));
     }
 
-    _filterList (data) {
+    _filterList (search) {
         event.preventDefault();
-        if( data ) {
-            this.setState(({ todos }) => ({
-                todos: todos.filter((todo) =>
-                    todo.title.toLowerCase().search(data.toLowerCase()) !== -1)
-            }));
-        } else {
-            this.getTodos();
-        }
+
+        this.setState({
+            search
+        });
     }
 
     _getTodos () {
@@ -93,16 +91,19 @@ export default class TodoList extends Component {
     }
 
     render () {
-        const { todos: todoData } = this.state;
-        const todos = todoData.map((todo) => (
-            <TodoItems
-                key = { todo.id }
-                { ...todo }
-                deleteTodo = { this.deleteTodo }
-                editTodo = { this.editTodo }
-                toggleTodo = { this.toggleTodo }
-            />
-        ));
+        const { todos: todoData, search } = this.state;
+        const todos = todoData
+            .filter((todo) => todo.title.includes(search))
+            .map((todo) => (
+                <TodoItems
+                    key = { todo.id }
+                    { ...todo }
+                    createTodo = { this.createTodo }
+                    deleteTodo = { this.deleteTodo }
+                    editTodo = { this.editTodo }
+                    toggleTodo = { this.toggleTodo }
+                />
+            ));
 
         return (
             <section className = { Styles.todoList } >

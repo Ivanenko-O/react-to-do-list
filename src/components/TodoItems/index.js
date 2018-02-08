@@ -4,37 +4,47 @@ import PropTypes from 'prop-types';
 
 // instruments
 import Styles from './styles';
-import TodoForm from '../TodoForm';
 
 export default class TodoItems extends Component {
     static propTypes = {
-        completed: PropTypes.bool.isRequired,
-        deleteTodo:PropTypes.func.isRequired,
-        editTodo:  PropTypes.func.isRequired,
-        id:        PropTypes.string.isRequired,
-        title:     PropTypes.string.isRequired,
-        toggleTodo:PropTypes.func.isRequired
+        completed:  PropTypes.bool.isRequired,
+        deleteTodo: PropTypes.func.isRequired,
+        editTodo:   PropTypes.func.isRequired,
+        id:         PropTypes.string.isRequired,
+        title:      PropTypes.string.isRequired,
+        toggleTodo: PropTypes.func.isRequired
     };
     constructor () {
         super();
-        this.handleEdit = :: this._handleEdit;
+        this.handleSubmit = :: this._handleSubmit;
         this.handleToggle = :: this._handleToggle;
         this.handleDelete = :: this._handleDelete;
+        this.startEdit = ::this._startEdit;
     }
     state = {
         editing: false
     };
 
-    _handleEdit () {
-        const { id, title } = this.props;
-
-        this.props.editTodo(id, title);
-    }
-
     _handleChange = ({ target }) => {
         const { value: title } = target;
+
         this.setState({ title });
     };
+
+    _handleSubmit (event) {
+        event.preventDefault();
+
+        const { title } = this.state;
+        const { id } = this.props;
+
+        if (title) {
+            this.props.editTodo(id, title);
+        }
+
+        this.setState({
+            editing: false
+        });
+    }
 
     _handleToggle () {
         const { id, completed } = this.props;
@@ -48,66 +58,49 @@ export default class TodoItems extends Component {
         this.props.deleteTodo(id);
     }
 
-    renderDisplay (title, completed, id) {
-        return (
-            <section className = { Styles.todoItems }>
-                <div className = { Styles.checkbox }>
-                    <input
-                        checked = { completed }
-                        id = { id }
-                        type = 'checkbox'
-                        onChange = { this.handleToggle }
-                    />
-                    <label htmlFor = { id } />
-                </div>
+    _startEdit () {
 
-                <p>{title}</p>
-
-                <div className = { Styles.icon }>
-                    <i className = { Styles.icon__bookmark } />
-                    <i className = { Styles.icon__edit } onClick = { () => this.setState( {editing: true })} />
-                    <i className = { Styles.icon__delete } onClick = { this.handleDelete } />
-                </div>
-            </section>
-        );
+        this.setState({
+            editing: true
+        });
     }
-
-    renderForm (title, completed, id) {
-        return (
-            <section className = { Styles.todoItems }>
-                <div className = { Styles.checkbox }>
-                    <input
-                        checked = { completed }
-                        id = { id }
-                        type = 'checkbox'
-                        onChange = { this.handleToggle }
-                    />
-                    <label htmlFor = { id } />
-                </div>
-
-                <form onSubmit = { this.handleSubmit }>
-                    <input
-                        type = 'text'
-                        value = { title }
-                        onChange = { this._handleChange }
-                        onKeyPress = { this.handleKeyPress }
-                    />
-
-
-                    <div className = { Styles.icon }>
-                        <i className = { Styles.icon__bookmark } />
-                        <i className = { Styles.icon__edit } onClick = { this.handleSubmit } />
-                        <i className = { Styles.icon__delete } onClick = { this.handleDelete } />
-                    </div>
-                </form>
-            </section>
-        );
-    }
-
 
     render () {
         const { title, completed, id } = this.props;
 
-        return this.state.editing ? this.renderForm(title, completed, id) : this.renderDisplay(title, completed, id);
+        return (
+            <section className = { Styles.todoItems }>
+                <div className = { Styles.checkbox }>
+                    <input
+                        checked = { completed }
+                        id = { id }
+                        type = 'checkbox'
+                        onChange = { this.handleToggle }
+                    />
+                    <label htmlFor = { id } />
+                </div>
+
+                {
+                    this.state.editing ?
+                        <form
+                            onSubmit = { this.handleSubmit }>
+                            <input
+                                type = 'text'
+                                value = { this.state.title || title }
+                                onChange = { this._handleChange }
+                                onKeyPress = { this.handleKeyPress }
+                            />
+                        </form>
+                        : <p> { title } </p>
+                }
+
+                <div className = { Styles.icon }>
+                    <i className = { Styles.icon__bookmark } />
+                    <i className = { Styles.icon__edit } onClick = { this.startEdit } />
+                    <i className = { Styles.icon__delete } onClick = { this.handleDelete } />
+                </div>
+
+            </section>
+        );
     }
 }
