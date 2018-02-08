@@ -1,5 +1,7 @@
 // core
 import React, { Component } from 'react';
+import { CSSTransition } from 'react-transition-group';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // instruments
 import Styles from './styles';
@@ -59,6 +61,7 @@ export default class TodoList extends Component {
             return todo;
         });
         this.setState({ todos });
+
         localStorage.setItem('todos', JSON.stringify(todos));
     }
 
@@ -95,14 +98,25 @@ export default class TodoList extends Component {
         const todos = todoData
             .filter((todo) => todo.title.includes(search))
             .map((todo) => (
-                <TodoItems
+
+                <CSSTransition
+                    classNames = {{
+                        enter:          Styles.todoInStart,
+                        enterActive:    Styles.todoInEnd,
+                        exit:           Styles.todoOutStart,
+                        exitActive:     Styles.todoOutEnd
+                    }}
                     key = { todo.id }
-                    { ...todo }
-                    createTodo = { this.createTodo }
-                    deleteTodo = { this.deleteTodo }
-                    editTodo = { this.editTodo }
-                    toggleTodo = { this.toggleTodo }
-                />
+                    timeout = { { enter: 500, exit: 1000 } } >
+                    <TodoItems
+                        key = { todo.id }
+                        { ...todo }
+                        createTodo = { this.createTodo }
+                        deleteTodo = { this.deleteTodo }
+                        editTodo = { this.editTodo }
+                        toggleTodo = { this.toggleTodo }
+                    />
+                </CSSTransition>
             ));
 
         return (
@@ -110,7 +124,9 @@ export default class TodoList extends Component {
                 <h3>To Do List</h3>
                 <TodoSearch filterList = { this.filterList } />
                 <hr />
-                { todos }
+                <TransitionGroup>
+                    { todos }
+                </TransitionGroup>
                 <hr />
                 <TodoForm createTodo = { this.createTodo } />
             </section>
