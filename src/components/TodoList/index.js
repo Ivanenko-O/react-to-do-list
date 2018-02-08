@@ -4,7 +4,7 @@ import { CSSTransition } from 'react-transition-group';
 import TransitionGroup from 'react-transition-group/TransitionGroup';
 
 // instruments
-import Styles from './styles';
+import Styles from './styles.scss';
 import TodoItems from '../TodoItems';
 import TodoSearch from '../../components/TodoSearch';
 import TodoForm from '../TodoForm';
@@ -15,6 +15,7 @@ export default class TodoList extends Component {
         super();
 
         this.createTodo = ::this._createTodo;
+        this.doneALl = ::this._doneALl;
         this.deleteTodo = ::this._deleteTodo;
         this.editTodo = ::this._editTodo;
         this.filterList = :: this._filterList;
@@ -23,9 +24,14 @@ export default class TodoList extends Component {
     }
 
     state = {
+        completed: false,
         todos: JSON.parse(localStorage.getItem('todos')) || [],
         search: ''
     };
+
+    componentDidMount () {
+        this.getTodos();
+    }
 
     _createTodo (title) {
         const todo = {
@@ -38,6 +44,23 @@ export default class TodoList extends Component {
 
         localStorage.setItem('todos', JSON.stringify(todos));
         this.setState({ todos });
+    }
+
+    _doneALl () {
+        let { completed } = this.state;
+
+        const todos = this.state.todos.map((todo) => {
+            todo.completed = !completed;
+
+            return todo;
+        });
+
+        this.setState({
+            completed: !completed,
+            todos
+        });
+
+        localStorage.setItem('todos', JSON.stringify(todos));
     }
 
     _deleteTodo (id) {
@@ -100,14 +123,14 @@ export default class TodoList extends Component {
             .map((todo) => (
 
                 <CSSTransition
-                    classNames = {{
-                        enter:          Styles.todoInStart,
-                        enterActive:    Styles.todoInEnd,
-                        exit:           Styles.todoOutStart,
-                        exitActive:     Styles.todoOutEnd
-                    }}
+                    classNames = { {
+                        enter:        Styles.todoInStart,
+                        enterActive:  Styles.todoInEnd,
+                        exit:         Styles.todoOutStart,
+                        exitActive:   Styles.todoOutEnd
+                    } }
                     key = { todo.id }
-                    timeout = { { enter: 500, exit: 1000 } } >
+                    timeout = { 500 } >
                     <TodoItems
                         key = { todo.id }
                         { ...todo }
@@ -128,7 +151,7 @@ export default class TodoList extends Component {
                     { todos }
                 </TransitionGroup>
                 <hr />
-                <TodoForm createTodo = { this.createTodo } />
+                <TodoForm createTodo = { this.createTodo } doneALl = { this.doneALl } />
             </section>
         );
     }

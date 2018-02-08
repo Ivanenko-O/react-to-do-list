@@ -7,10 +7,12 @@ import Styles from './styles';
 
 export default class TodoForm extends Component {
     static propTypes = {
-        createTodo: PropTypes.func.isRequired
+        createTodo: PropTypes.func.isRequired,
+        doneALl: PropTypes.func.isRequired
     };
     constructor () {
         super();
+        this.handleClickDone = :: this._handleClickDone;
         this.handleSubmit = :: this._handleSubmit;
         this.createTodo = :: this._createTodo;
         this.handleChange = :: this._handleChange;
@@ -51,6 +53,11 @@ export default class TodoForm extends Component {
         }
     }
 
+    _handleClickDone () {
+
+        this.props.doneALl();
+    }
+
     _handleKeyPress (event) {
 
         const enterKey = event.key === 'Enter';
@@ -64,12 +71,12 @@ export default class TodoForm extends Component {
     render () {
         const { color, title } = this.state;
 
-        console.log(title);
         return (
             <section className = { Styles.todoForm }>
                 <div className = { Styles.checkbox } onChange = { this.handleToggle }>
                     <input
                         id = 'doneAll'
+                        onClick = { this.handleClickDone }
                         type = 'checkbox'
                     />
                     <label htmlFor = 'doneAll'>Done all</label>

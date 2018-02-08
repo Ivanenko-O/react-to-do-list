@@ -26,7 +26,6 @@
     background-color: $paletteColor11;
     border: none;
   }
-
 }
 
 .todoInStart {
@@ -36,8 +35,8 @@
 
 .todoInEnd {
     transform: translateX(0%);
-    transition: opacity 700ms ease-out,
-                transform 700ms ease-out;
+    transition: opacity 500ms ease-out,
+                transform 500ms ease-out;
     opacity: 1;
 }
 
@@ -48,7 +47,7 @@
 
 .todoOutEnd {
     transform: translateX(100%);
-    transition: opacity 700ms ease-out,
-                transform 700ms ease-out;
+    transition: opacity 500ms ease-out,
+                transform 500ms ease-out;
     opacity: .01;
 }
