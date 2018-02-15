@@ -25,11 +25,11 @@ export default class TodoList extends Component {
 
     state = {
         completed: false,
-        todos: JSON.parse(localStorage.getItem('todos')) || [],
-        search: ''
+        todos:     [],
+        search:    ''
     };
 
-    componentDidMount () {
+    componentWillMount () {
         this.getTodos();
     }
 
@@ -97,7 +97,7 @@ export default class TodoList extends Component {
     }
 
     _getTodos () {
-        const todos = JSON.parse(localStorage.getItem('todos'));
+        const todos = JSON.parse(localStorage.getItem('todos')) || [];
 
         this.setState({ todos });
     }
@@ -118,6 +118,7 @@ export default class TodoList extends Component {
 
     render () {
         const { todos: todoData, search } = this.state;
+        console.log(todoData);
         const todos = todoData
             .filter((todo) => todo.title.includes(search))
             .map((todo) => (
@@ -136,7 +137,7 @@ export default class TodoList extends Component {
                         { ...todo }
                         createTodo = { this.createTodo }
                         deleteTodo = { this.deleteTodo }
-                        editTodo = { this.editTodo }
+                        editTodo  = { this.editTodo }
                         toggleTodo = { this.toggleTodo }
                     />
                 </CSSTransition>
